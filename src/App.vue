@@ -1,20 +1,43 @@
 <template>
   <div class="container">
     <h1 class="title">Youtube Clone Project</h1>
-    <SearchBarCompenent @search="searchTerm"/>
+    <SearchBarCompenent VideoListCompenent = "VideoListCompenent" @search="searchTerm"/>
+    <VideoListCompenent :videos="videos"/>
   </div>
 </template>
 
 <script>
 import SearchBarCompenent from './components/SearchBarCompenent/SearchBarCompenent.vue';  
+import VideoListCompenent from './components/VideoListCompenents/VideoListCompenent.vue';
+import axios from 'axios';
 export default {
   name: 'App',
   components: {
-    SearchBarCompenent
+    SearchBarCompenent,
+    VideoListCompenent
+  },
+  data(){
+    return{
+      videos : []
+    }
   },
   methods: {
     searchTerm(searchTerm) {
-      console.log(searchTerm)
+      axios.get('https://www.googleapis.com/youtube/v3/search' , {
+        params : {
+          part : 'snippet',
+          type : 'video',
+          key : 'AIzaSyBpm-udD3Brq-ajji77qv5PRG8XIQCUMOo',
+          query : searchTerm
+        }
+      })
+      .then(response => {
+        this.videos = response.data.items
+        console.log(this.videos)
+      })
+      .catch(error => {
+        console.log(error);
+      })
     }  
   }
 }
