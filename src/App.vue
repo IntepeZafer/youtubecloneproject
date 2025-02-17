@@ -2,23 +2,29 @@
   <div class="container">
     <h1 class="title">Youtube Clone Project</h1>
     <SearchBarCompenent VideoListCompenent = "VideoListCompenent" @search="searchTerm"/>
-    <VideoListCompenent :videos="videos"/>
+    <div>
+      <VideoDetailCompenent :video="selectedVideo"/>
+      <VideoListCompenent @videoSelect="onVideoSelect" :videos="videos"/>
+    </div>
   </div>
 </template>
 
 <script>
 import SearchBarCompenent from './components/SearchBarCompenent/SearchBarCompenent.vue';  
+import VideoDetailCompenent from './components/VideoDetailsCompenent/VideoDetailCompenent.vue';
 import VideoListCompenent from './components/VideoListCompenents/VideoListCompenent.vue';
 import axios from 'axios';
 export default {
   name: 'App',
   components: {
     SearchBarCompenent,
-    VideoListCompenent
+    VideoListCompenent,
+    VideoDetailCompenent
   },
   data(){
     return{
-      videos : []
+      videos : [],
+      selectedVideo : null
     }
   },
   methods: {
@@ -38,7 +44,10 @@ export default {
       .catch(error => {
         console.log(error);
       })
-    }  
+    },
+    onVideoSelect(videos) {
+      this.selectedVideo = videos
+    }
   }
 }
 </script>

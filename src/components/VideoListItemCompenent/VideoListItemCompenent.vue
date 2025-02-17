@@ -1,6 +1,6 @@
 <template>
   <ul class="video-list-container">
-    <li class="video-list-item">
+    <li class="video-list-item" @click="onVideoSelect">
       <img :src="imageUrl">
       <p>{{videos.snippet.title}}</p>
     </li>
@@ -14,9 +14,16 @@ export default {
         return {}
     },
     props:["videos"],
+    emits : ['videoSelect'],
     computed : {
         imageUrl(){
             return this.videos.snippet.thumbnails.medium.url
+        },
+    },
+    methods : {
+        onVideoSelect(){
+            this.$emit('videoSelect', this.videos)
+            console.log(this.videos)
         }
     }
 }
